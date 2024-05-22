@@ -7,19 +7,19 @@ use App\Http\Controllers\Auth\SendPasswordResetLinkController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthController::class, 'register'])
+Route::post('/auth/sign-up', [AuthController::class, 'register'])
     ->name('register');
 
-Route::post('/login', [AuthController::class, 'login'])
+Route::post('/auth/sign-in', [AuthController::class, 'login'])
     ->name('login');
 
 Route::post('/refresh', [AuthController::class, 'refresh'])
     ->name('refresh');
 
-Route::post('/forgot-password', SendPasswordResetLinkController::class)
+Route::post('/auth/forgot-password', SendPasswordResetLinkController::class)
     ->name('password.email');
 
-Route::post('/reset-password', ResetPasswordController::class)
+Route::post('/auth/reset-password', ResetPasswordController::class)
     ->name('password.update');
 
 Route::middleware('auth:api')->group(function () {
@@ -31,6 +31,6 @@ Route::middleware('auth:api')->group(function () {
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
-    Route::post('/logout', [AuthController::class, 'logout'])
+    Route::post('/auth/sign-out', [AuthController::class, 'logout'])
         ->name('logout');
 });

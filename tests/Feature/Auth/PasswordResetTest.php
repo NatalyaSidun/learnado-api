@@ -25,7 +25,7 @@ test('a password can be reset with a valid token', function () {
         'email' => 'test@example.com',
     ]);
 
-    $this->postJson('/api/forgot-password', [
+    $this->postJson('/api/auth/forgot-password', [
         'email' => 'test@example.com',
     ]);
 

@@ -8,7 +8,7 @@ test('users can authenticate and get back the user object and access token', fun
         'password' => Hash::make($password = 'password'),
     ]);
 
-    $response = $this->postJson('/api/login', [
+    $response = $this->postJson('/api/auth/sign-in', [
         'email'    => $user->email,
         'password' => $password,
     ]);

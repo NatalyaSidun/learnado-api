@@ -8,7 +8,7 @@ test('guests can register a new account and get back the user object and access 
         'password_confirmation' => 'password',
     ];
 
-    $response = $this->postJson('/api/register', $credentials);
+    $response = $this->postJson('/api/auth/sign-up', $credentials);
 
     $this->assertGuest();
     $response->assertSuccessful();
