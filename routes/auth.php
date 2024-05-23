@@ -13,6 +13,9 @@ Route::post('/auth/sign-up', [AuthController::class, 'register'])
 Route::post('/auth/sign-in', [AuthController::class, 'login'])
     ->name('login');
 
+Route::post('/auth/sign-in-with-token', [AuthController::class, 'login_with_token'])
+    ->name('login_with_token');
+
 Route::post('/refresh', [AuthController::class, 'refresh'])
     ->name('refresh');
 

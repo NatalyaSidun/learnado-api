@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Auth;
 use App\Actions\Users\CreateUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\LoginWithTokenRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\Users\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -28,6 +30,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
+
         $credentials = $request->only(['email', 'password']);
 
         $token = Auth::attempt($credentials);
@@ -37,10 +40,32 @@ class AuthController extends Controller
                 'status' => 'invalid-credentials',
             ], 401);
         }
-
         return response()->json([
             'user'         => new UserResource(Auth::user()),
-            'access_token' => $token,
+            'token' => $token,
+            'tokenType' => 'bearer',
+        ]);
+    }
+
+    public function login_with_token(LoginWithTokenRequest $request): JsonResponse
+    {
+        $credentials = $request->only(['token']);
+        try {
+            $token_data = JWTAuth::parseToken()->authenticate($credentials['token']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'invalid-credentials',
+            ], 401);
+        }
+        if (! $token_data) {
+            return response()->json([
+                'status' => 'invalid-credentials',
+            ], 401);
+        }
+        return response()->json([
+            'user'         => new UserResource(Auth::user()),
+            'token' => $credentials['token'],
+            'tokenType' => 'bearer',
         ]);
     }
 
@@ -56,7 +81,7 @@ class AuthController extends Controller
         $token = Auth::refresh();
 
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
         ]);
     }
 }
