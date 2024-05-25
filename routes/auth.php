@@ -16,7 +16,7 @@ Route::post('/auth/sign-in', [AuthController::class, 'login'])
 Route::post('/auth/sign-in-with-token', [AuthController::class, 'login_with_token'])
     ->name('login_with_token');
 
-Route::post('/refresh', [AuthController::class, 'refresh'])
+Route::post('/auth/refresh', [AuthController::class, 'refresh'])
     ->name('refresh');
 
 Route::post('/auth/forgot-password', SendPasswordResetLinkController::class)
